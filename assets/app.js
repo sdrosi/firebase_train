@@ -17,9 +17,17 @@ var config = {
   var destination = "";
   var frequency = "";
   var time = "";
-
+  var nextTrain = "";
+  var nextTrainFormatted = "";
+  var minutesAway = "";
+  var timeConverted = "";
+  var currentTime = "";
+  var difTime = "";
+  var tRemainder = "";
+  var minutesTilTrain = "";
+  
   //capture the data, yo
-
+$(document).ready(function(){
   $("#addTrain").on("click", function(){
 
     event.preventDefault();
@@ -33,13 +41,33 @@ var config = {
     time = $("#time-input").val().trim();
     console.log(time);
 
+    //logic for train times using moment.js
+
+    timeConverted = moment(time, "hh:mm").subtract(1, "years");
+    console.log(timeConverted);
+    curentTime = moment();
+    console.log(currentTime);
+    diffTime = moment().diff(moment(timeConverted), "minutes");
+    console.log(diffTime);
+    tRemainder = diffTime % frequency;
+    console.log(tRemainder);
+    minutesTilTrain = frequency - tRemainder;
+    console.log(minutesTilTrain);
+    nextTrain = moment().add(minutesTilTrain, "minutes");
+    console.log(nextTrain);
+    nextTrainFormatted = moment(nextTrain).format("hh:mm");
+    console.log(nextTrainFormatted);
+
     database.ref().push({
         trainName : trainName,
         destination : destination,
         frequency : frequency,
-        time : time
+        time : time,
+        nextTrainFormatted : nextTrainFormatted,
+        minutesTilTrain: minutesTilTrain
     })
-  });
+
+});
 
     database.ref().on("child_added", function(childSnapshot){
 
@@ -55,7 +83,13 @@ var config = {
         var timeDis = childSnapshot.val().time;
         console.log(childSnapshot.val().time);
 
-        var newRow = $("<tr><td>" + nameDis + "</td><td>" + destinationDis + "</td><td>" + frequencyDis + "</td></tr>")
+        var nextDis = childSnapshot.val().nextTrainFormatted;
+        console.log(childSnapshot.val().nextTrainFormatted);
+        
+        var minDis = childSnapshot.val().minutesTilTrain;
+        console.log(childSnapshot.val().minutesTilTrain);
+
+        var newRow = $("<tr><td>" + nameDis + "</td><td>" + destinationDis + "</td><td>" + frequencyDis + "</td><td>" + nextDis + "</td><td>" + minDis + "</td></tr>")
 
         $("#data-view").append(newRow);
       
@@ -63,4 +97,4 @@ var config = {
             console.log("Error: " + errorObject.code);
     });
 
-
+});
