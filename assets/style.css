@@ -1,0 +1,23 @@
+.everything {
+    background-image: url("train.jpg");
+}
+
+.jumbotron-fluid {
+    background-color: rgba(255, 255, 255, 0.6);
+    border:5px solid #ffffff;
+}
+
+.table-striped {
+    background-color: rgba(255, 255, 255, 0.6);
+    border:5px solid #ffffff;
+}
+
+.panel-default {
+    background-color: rgba(255, 255, 255, 0.6);
+    border:5px solid #ffffff;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.6);
+
+}
